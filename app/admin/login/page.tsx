@@ -10,9 +10,11 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleLogin = async () => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/login`,
+      `${BASE_URL}/auth/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -20,14 +22,19 @@ export default function AdminLoginPage() {
       }
     );
   
+    console.log("status:", res.status);
+
+    const data = await res.json();
+    console.log("response body:", data);
+
     if (!res.ok) {
-      setError("관리자 계정이 아니거나 로그인 정보가 올바르지 않습니다.");
+      setError(data.message ?? "로그인 실패");
       return;
     }
-  
-    const { accessToken } = await res.json();
+
+    const { accessToken } = data;
     setToken(accessToken);
-    router.push("/admin");
+    router.replace("/projects");
   };
   
 
@@ -74,6 +81,7 @@ export default function AdminLoginPage() {
       )}
   
       <button
+        type="button"
         onClick={handleLogin}
         style={{
           width: "100%",

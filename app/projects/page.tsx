@@ -1,9 +1,11 @@
-import { fetchProjects } from "@/lib/api";
+import { fetchProjectsServer } from "@/lib/api.server";
 import { Project } from "@/types/project";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectsClient from "./ProjectsClient";
 
 export default async function ProjectsPage() {
-  const projects: Project[] = await fetchProjects();
+  console.log("before fetch");
+  const projects = await fetchProjectsServer();
+  console.log("after fetch", projects.length);
 
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24 }}>
@@ -11,11 +13,7 @@ export default async function ProjectsPage() {
         Projects
       </h1>
 
-      <div style={{ display: "grid", gap: 16 }}>
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
-      </div>
+      <ProjectsClient projects={projects} />
     </main>
   );
 }

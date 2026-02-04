@@ -1,4 +1,5 @@
-import { fetchProjectById } from "@/lib/api";
+
+import { fetchProjectByIdServer } from "@/lib/api.server";
 import { formatProjectPeriod } from "@/lib/date";
 import { Project } from "@/types/project";
 
@@ -8,7 +9,7 @@ type PageProps = {
 
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const project: Project = await fetchProjectById(id);
+  const project: Project = await fetchProjectByIdServer(id);
 
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24 }}>

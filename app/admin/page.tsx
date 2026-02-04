@@ -22,7 +22,7 @@ export default function AdminPage() {
 
       <ul style={{ marginTop: 24 }}>
         <li>
-          <Link href="/admin/projects">
+          <Link href="/projects">
             프로젝트 관리 →
           </Link>
         </li>
