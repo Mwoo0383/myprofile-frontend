@@ -2,35 +2,47 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { setAdmin } from "@/lib/adminAuth";
-
-const ADMIN_PASSWORD = "admin123"; // env로 빼도 됨
+import { setToken } from "@/lib/auth";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setAdmin();
-      router.push("/admin");
-    } else {
-      setError("비밀번호가 올바르지 않습니다.");
+  const handleLogin = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    );
+  
+    if (!res.ok) {
+      setError("관리자 계정이 아니거나 로그인 정보가 올바르지 않습니다.");
+      return;
     }
+  
+    const { accessToken } = await res.json();
+    setToken(accessToken);
+    router.push("/admin");
   };
+  
 
   return (
     <main style={{ maxWidth: 400, margin: "120px auto" }}>
       <h1 style={{ fontSize: 24, fontWeight: 800 }}>
         관리자 로그인
       </h1>
-
+  
+      {/* 이메일 */}
       <input
-        type="password"
-        placeholder="관리자 비밀번호"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        type="email"
+        placeholder="관리자 이메일"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         style={{
           width: "100%",
           padding: 12,
@@ -39,13 +51,28 @@ export default function AdminLoginPage() {
           border: "1px solid #e5e7eb",
         }}
       />
-
+  
+      {/* 비밀번호 */}
+      <input
+        type="password"
+        placeholder="관리자 비밀번호"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={{
+          width: "100%",
+          padding: 12,
+          marginTop: 12,
+          borderRadius: 8,
+          border: "1px solid #e5e7eb",
+        }}
+      />
+  
       {error && (
         <p style={{ color: "red", marginTop: 8 }}>
           {error}
         </p>
       )}
-
+  
       <button
         onClick={handleLogin}
         style={{
@@ -63,4 +90,5 @@ export default function AdminLoginPage() {
       </button>
     </main>
   );
+  
 }

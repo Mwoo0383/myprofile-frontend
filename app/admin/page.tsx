@@ -2,14 +2,14 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { isAdmin } from "@/lib/adminAuth";
+import { isLoggedIn } from "@/lib/auth";
 import Link from "next/link";
 
 export default function AdminPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAdmin()) {
+    if (!isLoggedIn()) {
       router.replace("/admin/login");
     }
   }, [router]);
