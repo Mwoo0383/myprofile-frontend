@@ -1,6 +1,19 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { isAdmin } from "@/lib/adminAuth";
 import Link from "next/link";
 
 export default function AdminPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAdmin()) {
+      router.replace("/admin/login");
+    }
+  }, [router]);
+
   return (
     <main style={{ maxWidth: 960, margin: "80px auto", padding: 24 }}>
       <h1 style={{ fontSize: 28, fontWeight: 800 }}>
