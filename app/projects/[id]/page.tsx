@@ -1,28 +1,14 @@
-import { Project } from "@/types/project";
+import { fetchProjectById } from "@/lib/api";
 import { formatProjectPeriod } from "@/lib/date";
+import { Project } from "@/types/project";
 
 type PageProps = {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
 };
 
-async function getProject(id: string): Promise<Project> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/projects/${id}`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error("프로젝트 상세 조회 실패");
-  }
-
-  return res.json();
-}
-
 export default async function ProjectDetailPage({ params }: PageProps) {
-  const { id } = await params; // ⭐ 핵심
-  const project = await getProject(id);
+  const { id } = await params;
+  const project: Project = await fetchProjectById(id);
 
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24 }}>
@@ -33,7 +19,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       <p style={{ color: "#6b7280", marginTop: 8 }}>
         기간: {formatProjectPeriod(project.startDate, project.endDate)}
       </p>
-
 
       <p style={{ marginTop: 24 }}>
         {project.description}
