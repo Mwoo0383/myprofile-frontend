@@ -21,11 +21,8 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ email, password }),
       }
     );
-  
-    console.log("status:", res.status);
 
     const data = await res.json();
-    console.log("response body:", data);
 
     if (!res.ok) {
       setError(data.message ?? "로그인 실패");

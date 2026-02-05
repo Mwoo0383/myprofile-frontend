@@ -30,7 +30,7 @@ export default function ProjectsClient({
       {/* 관리자 전용 버튼 */}
       {isAdmin && (
         <div style={{ marginBottom: 16 }}>
-          <Link href="/admin/projects/new">
+          <Link href="/projects/new">
             <button
               style={{
                 padding: "8px 12px",

@@ -16,7 +16,7 @@ export default function ProjectCard({
 
       {isAdmin && (
         <div style={{ marginTop: 8 }}>
-          <Link href={`/admin/projects/${project.id}/edit`}>수정</Link>
+          <Link href={`/projects/${project.id}/edit`}>수정</Link>
           {" | "}
           <button
             onClick={() => onDelete?.(project.id)}

@@ -10,7 +10,6 @@ export async function fetchProjectsServer(): Promise<Project[]> {
   const res = await fetch(`${BASE_URL}/projects`, {
     cache: "no-store",
   });
-  console.log("BASE_URL =", BASE_URL);
 
   if (!res.ok) {
     Error;

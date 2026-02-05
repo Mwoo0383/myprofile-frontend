@@ -33,3 +33,29 @@ export async function deleteProject(id: number) {
 
   if (!res.ok) throw new Error("프로젝트 삭제 실패");
 }
+
+// 🔐 관리자 전용 - 수정할 프로젝트 폼 가져오기
+export async function fetchProjectById(id: string) {
+  const res = await fetch(`${BASE_URL}/projects/${id}`, {
+    headers: authHeaders(),
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("프로젝트 조회 실패");
+  }
+
+  return res.json();
+}
+
+// 🔐 관리자 전용 - 프로젝트 수정
+export async function updateProject(id: string, dto: any) {
+  return fetch(`${BASE_URL}/projects/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+    body: JSON.stringify(dto),
+  });
+}
