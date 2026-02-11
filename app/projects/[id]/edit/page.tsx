@@ -23,7 +23,6 @@ export default function EditProjectPage() {
 
   return (
     <>
-      <h1>프로젝트 수정</h1>
       <ProjectForm
         initialData={project}
         onSubmit={handleUpdate}

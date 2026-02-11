@@ -12,7 +12,14 @@ export default function ProjectCard({
 }) {
   return (
     <div style={{ border: "1px solid #e5e7eb", padding: 16, borderRadius: 8 }}>
-      <h3>{project.title}</h3>
+      <Link
+        href={`/projects/${project.id}`}
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <h3 style={{ cursor: "pointer" }}>
+          {project.title}
+        </h3>
+      </Link>
 
       {isAdmin && (
         <div style={{ marginTop: 8 }}>
