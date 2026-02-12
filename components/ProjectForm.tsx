@@ -152,7 +152,7 @@ export default function ProjectForm({
                 onChange={() => toggleTech(tech.tech_id)}
                 style={{ display: "none" }}
               />
-              {tech.name}
+              {tech.slug}
             </label>
           ))}
         </div>
