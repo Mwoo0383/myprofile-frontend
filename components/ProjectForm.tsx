@@ -1,49 +1,56 @@
 "use client";
 
-import { useState } from "react";
-
-type ProjectFormProps = {
-  initialData?: {
-    title: string;
-    description: string;
-    githubUrl?: string;
-    techs?: string[];
-  };
-  onSubmit: (data: any) => void;
-  isEdit?: boolean;
-};
+import { useEffect, useState } from "react";
 
 export default function ProjectForm({
+  techOptions,
   initialData,
   onSubmit,
   isEdit = false,
 }: ProjectFormProps) {
+  // 상태관리
   const [title, setTitle] = useState(initialData?.title ?? "");
   const [description, setDescription] = useState(initialData?.description ?? "");
   const [githubUrl, setGithubUrl] = useState(initialData?.githubUrl ?? "");
-  const [techStacks, setTechStacks] = useState<string[]>(
-    initialData?.techs ?? []
-  );
-  const [techInput, setTechInput] = useState("");
+  const [deployUrl, setDeployUrl] = useState(initialData?.deployUrl ?? "");
+  const [startDate, setStartDate] = useState(initialData?.startDate ?? "");
+  const [endDate, setEndDate] = useState(initialData?.endDate ?? "");
+  const [selectedTechIds, setSelectedTechIds] = useState<number[]>(initialData?.techIds ?? []);
+  
+  useEffect(() => {
+    if (!initialData) return;
+  
+    setTitle(initialData.title ?? "");
+    setDescription(initialData.description ?? "");
+    setGithubUrl(initialData.githubUrl ?? "");
+    setDeployUrl(initialData.deployUrl ?? "");
+    setStartDate(initialData.startDate ?? "");
+    setEndDate(initialData.endDate ?? "");
+    setSelectedTechIds(initialData.techIds ?? []);
+  }, [initialData]);
+  
 
-  const addTech = () => {
-    const value = techInput.trim();
-    if (!value) return;
-    if (techStacks.includes(value)) return;
-
-    setTechStacks((prev) => [...prev, value]);
-    setTechInput("");
-  };
-
-  const removeTech = (tech: string) => {
-    setTechStacks((prev) => prev.filter((t) => t !== tech));
+  const toggleTech = (id: number) => {
+    setSelectedTechIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((techId) => techId !== id)
+        : [...prev, id]
+    );
   };
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit({ title, description, githubUrl, techStacks });
+        onSubmit({ 
+          title, 
+          description, 
+          githubUrl, 
+          deployUrl, 
+          startDate,
+          endDate: endDate || null,
+          techIds: selectedTechIds,
+        });
       }}
       style={{
         maxWidth: 520,
@@ -59,6 +66,26 @@ export default function ProjectForm({
       <h2 style={{ fontSize: 20, fontWeight: 700 }}>
         {isEdit ? "프로젝트 수정" : "프로젝트 생성"}
       </h2>
+
+      {/* 프로젝트 시작일 */}
+      <Field label="프로젝트 시작일">
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          style={inputStyle}
+      />
+      </Field>
+
+      {/* 프로젝트 종료일 */}
+      <Field label="프로젝트 종료일 (선택)">
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          style={inputStyle}
+      />
+      </Field>
 
       {/* 프로젝트 제목 */}
       <Field label="프로젝트 제목">
@@ -91,41 +118,44 @@ export default function ProjectForm({
         />
       </Field>
 
-      {/* 기술 스택 */}
-      <Field label="기술 스택">
+      {/* deploy URL */}
+      <Field label="배포 URL">
         <input
-          placeholder="기술 입력 후 Enter (예: React)"
-          value={techInput}
-          onChange={(e) => setTechInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              addTech();
-            }
-          }}
+          placeholder="https://www.deploy-project.com"
+          value={deployUrl}
+          onChange={(e) => setDeployUrl(e.target.value)}
           style={inputStyle}
         />
+      </Field>
 
-        {techStacks.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {techStacks.map((tech) => (
-              <span
-                key={tech}
-                onClick={() => removeTech(tech)}
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 16,
-                  background: "#f1f5f9",
-                  fontSize: 13,
-                  cursor: "pointer",
-                }}
-                title="클릭하면 삭제"
-              >
-                {tech} ✕
-              </span>
-            ))}
-          </div>
-        )}
+      {/* 기술 스택 */}
+      <Field label="기술 스택 선택">
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {techOptions.map((tech) => (
+            <label
+              key={tech.tech_id}
+              style={{
+                padding: "6px 10px",
+                borderRadius: 16,
+                cursor: "pointer",
+                background: selectedTechIds.includes(tech.tech_id)
+                  ? "#2563eb"
+                  : "#e5e7eb",
+                color: selectedTechIds.includes(tech.tech_id)
+                  ? "#fff"
+                  : "#000",
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={selectedTechIds.includes(tech.tech_id)}
+                onChange={() => toggleTech(tech.tech_id)}
+                style={{ display: "none" }}
+              />
+              {tech.name}
+            </label>
+          ))}
+        </div>
       </Field>
 
       {/* 버튼 */}

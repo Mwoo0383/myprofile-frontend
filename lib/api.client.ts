@@ -59,3 +59,9 @@ export async function updateProject(id: string, dto: any) {
     body: JSON.stringify(dto),
   });
 }
+
+export async function fetchTechList() {
+  const res = await fetch(`${BASE_URL}/techs`);
+  if (!res.ok) throw new Error("기술 목록 조회 실패");
+  return res.json();
+}

@@ -6,5 +6,5 @@ export type Project = {
     deployUrl?: string;
     startDate: string;
     endDate: string | null;
-    techs: string[];
+    techs: Tech[];
 };  

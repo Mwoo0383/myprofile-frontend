@@ -29,7 +29,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       <div style={{ marginTop: 16, display: "flex", gap: 8, flexWrap: "wrap" }}>
         {project.techs.map((tech) => (
           <span
-            key={tech}
+            key={tech.tech_id}
             style={{
               backgroundColor: "#f3f4f6",
               padding: "6px 12px",
@@ -38,7 +38,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               fontWeight: 500,
             }}
           >
-            {tech}
+            {tech.name}
           </span>
         ))}
       </div>
