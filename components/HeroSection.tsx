@@ -15,7 +15,7 @@ export default function HeroSection() {
           lineHeight: 1.3,
         }}
       >
-        안녕하세요,  
+        안녕하세요.  
         <br />
         신입 웹 개발자 <span style={{ color: "#2563eb" }}>강민우</span>입니다.
       </h1>
