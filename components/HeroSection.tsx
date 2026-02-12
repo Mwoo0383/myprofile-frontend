@@ -17,7 +17,7 @@ export default function HeroSection() {
       >
         안녕하세요,  
         <br />
-        백엔드 개발자 <span style={{ color: "#2563eb" }}>강민우</span>입니다.
+        신입 웹 개발자 <span style={{ color: "#2563eb" }}>강민우</span>입니다.
       </h1>
 
       <p
@@ -28,8 +28,8 @@ export default function HeroSection() {
           maxWidth: 640,
         }}
       >
-        서비스 구조와 안정성을 고민하며 개발합니다.  
-        운영 환경을 고려한 백엔드 설계와 문제 해결에 관심이 있습니다.
+        “왜 안 되지?”에서 끝나지 않는 개발자 강민우입니다.<br></br>
+        구조를 이해하고 끝까지 파고들어 해결하는 것을 좋아합니다.
       </p>
 
       <div style={{ marginTop: 32 }}>
